@@ -24,10 +24,10 @@ namespace ReLeMesh
         };
 
         AbstractObject(
-            coordinate,
-            coordinate,
-            coordinate,
-            coordinate,
+            coordinate southWest,
+            coordinate southEast,
+            coordinate northWest,
+            coordinate northEast,
             Role role);
         AbstractObject();
 

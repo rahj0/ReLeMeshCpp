@@ -1,4 +1,5 @@
 #include "Basic2dEnvironmentRender.hh"
+#include <iostream>
 #include <math.h>
 #include <algorithm>
 using namespace ReLeMesh;
@@ -6,7 +7,9 @@ using namespace ReLeMesh;
 Basic2dEnvironmentRender::Basic2dEnvironmentRender(const std::array<integer,2> envSize) :
 _sizeX(envSize[0]), _sizeY(envSize[1])
 {
-
+    _roleChannels[AbstractObject::Role::Active] = 0;
+    _roleChannels[AbstractObject::Role::Locked] = 1;
+    _roleChannels[AbstractObject::Role::PreDefined] = 1;
 }
 
 std::vector<array1dInt> Basic2dEnvironmentRender::computePixelsFromLine(
@@ -30,7 +33,7 @@ std::vector<array1dInt> Basic2dEnvironmentRender::computePixelsFromLine(
 
         pixels.push_back({x[0],y[0]});
         integer xLen = x.size();
-        integer yLen = x.size();
+        integer yLen = y.size();
         if(xLen == 2 ){
             if(yLen == 1){
                 pixels.push_back({x[1],y[0]});
@@ -43,26 +46,34 @@ std::vector<array1dInt> Basic2dEnvironmentRender::computePixelsFromLine(
   
         pixels.push_back({point2[0],point2[1]});
     }
+    for(auto& pixel : pixels){
+        std::cout << "Pixel: " << pixel[0] << "," << pixel[1] << std::endl;
+    }   
     return pixels;
 }
 
 bool Basic2dEnvironmentRender::renderObject(
-    const AbstractObject& object, std::vector<std::vector<float>>& channelState)
+    const std::unique_ptr<AbstractObject>& object, std::vector<std::vector<float>>& channelState)
 {
-    //    # print("render")
-        
-    float intensity = 0.75;
+    // assert(channelState.size() == _sizeX);
+    // for(auto& vec : channelState){
+    //     assert(channelState.size() == _sizeX);
+    // }
+    float intensity = 1;
     // object.intensity = 0.75
-        
-    auto southWestCornerX = object.getSouthWest()[0];
-    auto southWestCornerY = object.getSouthWest()[1];
-    auto southEastCornerX = object.getSouthEast()[0];
-    auto southEastCornerY = object.getSouthEast()[1];
-
-    auto southWestCorner = object.getSouthWest();
-    auto southEastCorner = object.getSouthEast();
-    auto northWestCorner = object.getNorthWest();
-    auto northEastCorner = object.getNorthEast();
+    auto southWestCorner = object->getSouthWest();
+    auto southEastCorner = object->getSouthEast();
+    auto northWestCorner = object->getNorthWest();
+    auto northEastCorner = object->getNorthEast();
+    
+    std::cout << southWestCorner[0] << std::endl;
+    std::cout << southWestCorner[1] << std::endl;
+    std::cout << southEastCorner[0] << std::endl;
+    std::cout << southEastCorner[1] << std::endl;
+    std::cout << northWestCorner[0] << std::endl;
+    std::cout << northWestCorner[1] << std::endl;
+    std::cout << northEastCorner[0] << std::endl;
+    std::cout << northEastCorner[1] << std::endl;
         // auto northEastCornerX
         // auto northEastCornerY) = object.getNorthEast()
     
@@ -71,8 +82,8 @@ bool Basic2dEnvironmentRender::renderObject(
     auto pixelsNorth = computePixelsFromLine(northEastCorner,northWestCorner);
     auto pixelsEast = computePixelsFromLine(southEastCorner,northEastCorner);
         
-    if(object.getRole() == AbstractObject::Role::Active){
-            bool  wrongMove = false;
+    // if(object->getRole() == AbstractObject::Role::Active){
+    //         bool  wrongMove = false;
             // TODO Find way to replace this
             // if [northWestCornerX,northWestCornerY] in pixelsWest[:-1]:
             //     wrongMove = True
@@ -84,33 +95,53 @@ bool Basic2dEnvironmentRender::renderObject(
             //     wrongMove = True
             // if wrongMove:
             //     return [False, 0]
+// }
             
-        for(auto& pixel : pixelsWest){
-            channelState[pixel[0]][pixel[1]] = intensity;
-        }
-        for(auto& pixel : pixelsNorth){
-            channelState[pixel[0]][pixel[1]] = intensity;
-        }
-
-        for(auto& pixel : pixelsEast){
-            channelState[pixel[0]][pixel[1]] = intensity;
-         }               
-        for(auto& pixel : pixelsSouth){
-            channelState[pixel[0]][pixel[1]] = intensity;
-        }
-        if(object.getRole() == AbstractObject::Role::Active){
-            channelState[pixelsWest[0][0]][pixelsWest[0][1]] = 1.0;
-            channelState[pixelsEast[0][0]][pixelsEast[0][1]] = 1.0;
-        }
-
-        channelState[pixelsWest.back()[0]][pixelsWest.back()[1]] = 1;
-        channelState[pixelsEast.back()[0]][pixelsEast.back()[1]] = 1;
+    for(auto& pixel : pixelsWest){
+        std::cout << "Pixel W: " << pixel[0] << "," << pixel[1] << std::endl;
+        channelState[pixel[0]][pixel[1]] = intensity;
     }
+    for(auto& pixel : pixelsNorth){
+        std::cout << "Pixel N: " << pixel[0] << "," << pixel[1] << std::endl;
+        channelState[pixel[0]][pixel[1]] = intensity;
+    }  
+    for(auto& pixel : pixelsEast){
+        // std::cout << "Pixel E: " << pixel[0] << "," << pixel[1] << std::endl;
+        channelState[pixel[0]][pixel[1]] = intensity;
+        }               
+    for(auto& pixel : pixelsSouth){
+        std::cout << "Pixel S: " << pixel[0] << "," << pixel[1] << std::endl;
+        channelState[pixel[0]][pixel[1]] = intensity;
+    }
+    if(object->getRole() == AbstractObject::Role::Active){
+        channelState[pixelsWest[0][0]][pixelsWest[0][1]] = 1.0;
+        channelState[pixelsEast[0][0]][pixelsEast[0][1]] = 1.0;
+    }
+
+    channelState[pixelsWest.back()[0]][pixelsWest.back()[1]] = 1;
+    channelState[pixelsEast.back()[0]][pixelsEast.back()[1]] = 1;
+    
     return true;
 }
 bool Basic2dEnvironmentRender::renderEnv(
-    const std::vector<AbstractObject> objects, std::vector<std::vector<integer>>& channelState)
+    const std::vector<std::unique_ptr<AbstractObject>>& objects, 
+    std::vector<std::vector<std::vector<float>>>& state)
 {
+    int channels = 2;
+    state = std::vector<std::vector<std::vector<float>>>(channels,
+    std::vector<std::vector<float>>(_sizeX,std::vector<float>(_sizeY)));
+    // TODO Optimize
+    // TODO idea. do vec vec of usigned int 
+
+    for(auto& object : objects){
+        bool ok = renderObject(
+            object,state[_roleChannels[object->getRole()]]);
+        if(!ok){
+            state.clear();
+            std::cout << "Failed to render" << std::endl;
+            return false;
+        }
+    }
     return true;
 }
 array1dInt calculateXYmoveUnitVector(const array1dInt point1,const array1dInt point2)
@@ -182,24 +213,3 @@ std::vector<integer> Basic2dEnvironmentRender::valueLeft(
     }
     return {value}; 
 }
-
-    // def computePixelsFromLine(x1,y1,x2,y2):
-     
-    // def renderEnvObject(self, object, state):
- 
-    // def renderEnv(self, objects):
-    //     a = np.zeros([self._yRes,self._xRes,2])
-
-    //     for object in objects:
-    //         object.intensity = 0.75
-    //         ok,a[:,:,object.channel] = self.renderEnvObject(object, a[:,:,object.channel])
-    //         # print(object.channel)
-    //         # print(object.name)
-
-    //         if not ok:
-    //             return [False,a]
-    //     # print("")
-    //     b = a[:,:,0]
-    //     c = a[:,:,1]
-
-    //     return [True,np.stack([b,c],axis=2)]

@@ -10,7 +10,9 @@ ReLeMesh::AbstractObject::AbstractObject(
             coordinate southEast,
             coordinate northWest,
             coordinate northEast,
-            Role role) : _role(role)
+            Role role) : _role(role),
+            _southWest(southWest),_southEast(southEast),
+            _northWest(northWest),_northEast(northEast)
 {
 }
 

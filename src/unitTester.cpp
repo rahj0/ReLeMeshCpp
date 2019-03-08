@@ -3,12 +3,16 @@
 #include "gameObjects/LineObject.hh"
 #include "gameObjects/TriangleObject.hh"
 #include "Environments/AbstractEnvironment.hh"
+#include "Environments/TriMeshEnvironment.hh"
 #include "Environments/Rendering/Basic2dEnvironmentRender.hh"
 
 #include <memory>
 
-using namespace ReLeMesh;
-using namespace std;
+using ReLeMesh::TriangleObject;
+using ReLeMesh::coordinate;
+using ReLeMesh::integer;
+using std::unique_ptr;
+using std::cout; using std::endl; using std::vector;
 
 void unitTest_Basic2dEnvironmentRender()
 {
@@ -27,6 +31,7 @@ void unitTest_Basic2dEnvironmentRender()
         new TriangleObject(p11,p12,p21, TriangleObject::Role::Active)));
     objects.push_back(std::unique_ptr<TriangleObject>(
         new TriangleObject(p13,p14,p23, TriangleObject::Role::PreDefined)));
+
     ReLeMesh::Basic2dEnvironmentRender envRender({size,size});
 
     vector<vector<vector<float>>> state;
@@ -42,6 +47,12 @@ void unitTest_Basic2dEnvironmentRender()
         }
         cout << endl;
     }
+}
+
+void unitTest_AbstractEnvironment()
+{
+    int size = 10;
+    ReLeMesh::TriMeshEnvironment testEnv({size,size});
 }
 
 int main()

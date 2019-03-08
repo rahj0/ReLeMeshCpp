@@ -11,6 +11,12 @@ namespace ReLeMesh
     {
     public:
         TriMeshEnvironment(const std::array<int,ReLeMesh_N_DIM> envSize);
+        long getMaxNumberOfHeros() const;
+
+    protected:
+        double getIdealObjectArea(const array1dInt point1);
+        void createNewHero();
+        void convertStepInput(); // This might need to return tuple
     };
 }
 

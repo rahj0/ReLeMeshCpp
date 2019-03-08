@@ -14,7 +14,7 @@ namespace ReLeMesh
             coordinate,
             coordinate,
             Role role);
-        LineObject();
+        LineObject(); // TODO remove
 
         double calculateArea() const;
 

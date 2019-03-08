@@ -1,32 +1,94 @@
 #include "AbstractEnvironment.hh"
-// // # -*- coding: utf-8 -*-
-// """
-// Created on Thu May 24 22:40:03 2018
-
-// @author: Rasmus da beast
-// """
-
-// # -*- coding: utf-8 -*-
-
-// import numpy as np
-// import random
-// import itertools
-// import scipy.misc
-// import math
-// from abc import abstractmethod, ABC
-// from gameObjects.squareObj import *
-// from gameObjects.triObj import *
-// from environments.Rendering.BasicEnvironmentRender import *
-// from worldGenerators.AbstractMeshWorldGenerator import *
-// from worldGenerators.simpleMeshWorldGenerator import *
-// from random import shuffle
+using ReLeMesh::tensor;
+using ReLeMesh::integer;
+using ReLeMesh::AbstractObject;
 
 ReLeMesh::AbstractEnvironment::
-AbstractEnvironment(const std::array<int,ReLeMesh_N_DIM> environmentSize) :
+AbstractEnvironment(const array1dInt environmentSize) :
 _size(environmentSize)
 {
+    static_assert(environmentSize.size() > 1);
+}
+void ReLeMesh::AbstractEnvironment::step(const unsigned action)
+{
+
+} // This might need to return tuple
+void ReLeMesh::AbstractEnvironment::reset()
+{
+    _actionCount = 0;
+}
+
+void ReLeMesh::AbstractEnvironment::setSeed(const int newSeed) 
+{
+
+} // TODO
+void ReLeMesh::AbstractEnvironment::setCenterOfFocus(const array1dInt envSize) 
+{
+
+} // TODO
+
+const tensor& ReLeMesh::AbstractEnvironment::getState() const 
+{
+    return _stateTensor;
+} // TODO
+integer ReLeMesh::AbstractEnvironment::getSizeX() const 
+{
+    return _size[0];
+}
+integer ReLeMesh::AbstractEnvironment::getSizeY() const 
+{ 
+    return _size[1];
+}
+integer ReLeMesh::AbstractEnvironment::getActionCount() const 
+{ 
+    return _actionCount;
+}
+integer ReLeMesh::AbstractEnvironment::getChannelCount() const 
+{
+    return 2; // TODO
+}
+
+void ReLeMesh::AbstractEnvironment::resetVariables() 
+{ 
 
 }
+std::unique_ptr<AbstractObject>& ReLeMesh::AbstractEnvironment::getHero() 
+{
+    return _objects.back();
+} // is this needed ?
+void ReLeMesh::AbstractEnvironment::moveChar()
+{ 
+
+} // This might need to return tuple
+integer ReLeMesh::AbstractEnvironment::countOverlappingPixels()
+{ 
+    return 0;
+} // Move to analyser class ?
+double ReLeMesh::AbstractEnvironment::calculateFinishedObjectBonusReward() const 
+{ 
+    return 0.0; //TODO
+}// Move to analyser class ?
+void ReLeMesh::AbstractEnvironment::renderEnv()
+{ 
+
+} 
+
+void ReLeMesh::AbstractEnvironment::resizeObjToFitEnv(AbstractObject& object)
+{
+
+}// Move to environment handler class ?
+void ReLeMesh::AbstractEnvironment::convertHeroToStartObjects()
+{ 
+
+}// Move to environment handler class ?
+void ReLeMesh::AbstractEnvironment::saveHeroAsWall()
+{
+
+}// Move to environment handler class ?
+void ReLeMesh::AbstractEnvironment::pushToFrontStarterObjectNearestToPoint(const array1dInt point1) 
+{ 
+
+} // Move to environment handler class ?
 
 // class AbstractMeshEnv(ABC):
 //     def __init__(self,partial,size, actions, seedValue = 0, cornerMatchBonus = 30):

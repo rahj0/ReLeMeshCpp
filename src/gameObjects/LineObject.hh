@@ -9,12 +9,9 @@ namespace ReLeMesh
     {
     public:
         LineObject(
-            coordinate,
-            coordinate,
-            coordinate,
-            coordinate,
+            coordinate west,
+            coordinate east,
             Role role);
-        LineObject(); // TODO remove
 
         double calculateArea() const;
 

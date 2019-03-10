@@ -29,7 +29,7 @@ namespace ReLeMesh
             coordinate northWest,
             coordinate northEast,
             Role role);
-        AbstractObject();
+        AbstractObject() = delete;
 
         virtual coordinate getCenterPoint() const;
         virtual coordinate getMovingCenterPoint() const;

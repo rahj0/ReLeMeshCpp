@@ -3,16 +3,9 @@
 #include <iostream>
 
 ReLeMesh::LineObject::LineObject(
-            coordinate southWest,
-            coordinate southEast,
-            coordinate northWest,
-            coordinate northEast,
-            Role role)
-{
-    std::cout << "LineObject Created" << std::endl;
-}
-
-ReLeMesh::LineObject::LineObject()
+            coordinate west,
+            coordinate east,
+            Role role) : AbstractObject(west,east,west,east,role)
 {
     std::cout << "LineObject Created" << std::endl;
 }

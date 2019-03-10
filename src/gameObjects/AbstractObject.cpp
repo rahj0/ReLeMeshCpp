@@ -16,10 +16,6 @@ ReLeMesh::AbstractObject::AbstractObject(
 {
 }
 
-ReLeMesh::AbstractObject::AbstractObject() : _role(Role::Active)
-{
-}
-
 coordinate 
 ReLeMesh::AbstractObject::getCenterPoint() const
 {

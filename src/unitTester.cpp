@@ -5,6 +5,7 @@
 #include "Environments/AbstractEnvironment.hh"
 #include "Environments/TriMeshEnvironment.hh"
 #include "Environments/Rendering/Basic2dEnvironmentRender.hh"
+#include "WorldGenerators/SimpleWorldGenerator.hh"
 
 #include <memory>
 
@@ -41,7 +42,7 @@ void unitTest_Basic2dEnvironmentRender()
     for(auto& matrix : state){
         for(int j = matrix.front().size()-1; j >= 0; --j){
             for(int i = 0; i < matrix.size(); ++i){
-                cout << matrix[i][j];
+                cout << matrix[i][j] << " ";
             }
             cout << endl;
         }
@@ -53,20 +54,52 @@ void unitTest_AbstractEnvironment()
 {
     int size = 10;
     ReLeMesh::TriMeshEnvironment testEnv({size,size});
+    std::cout << testEnv.getMaxNumberOfHeros() << std::endl;
+}
+void unitTest_WorldGenerator()
+{
+    int size = 10;
+    ReLeMesh::SimpleWorldGenerator generator;
+    auto objects = generator.generate({size,size});
+    
+    std::cout << "Basic2dEnvironmentRender" << std::endl;
+    ReLeMesh::Basic2dEnvironmentRender envRender({size,size});
+
+    vector<vector<vector<float>>> state;
+    envRender.renderEnv(objects,state);
+    for(auto& matrix : state){
+        for(int j = matrix.front().size()-1; j >= 0; --j){
+            for(int i = 0; i < matrix.size(); ++i){
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
 }
 
-int main()
+void unitTest_Objects()
 {
-    ReLeMesh::LineObject lineObject; 
-    ReLeMesh::TriangleObject triObject; 
     ReLeMesh::coordinate southWest {0,0}; 
     ReLeMesh::coordinate southEast {3,0}; 
     ReLeMesh::coordinate north {1,3};
-    ReLeMesh::TriangleObject triObject2(
+    ReLeMesh::TriangleObject triObject1(
       southWest,southEast,north,ReLeMesh::TriangleObject::Role::Active); 
+    ReLeMesh::TriangleObject triObject2(
+      southWest,southEast,north,ReLeMesh::TriangleObject::Role::PreDefined); 
+    ReLeMesh::LineObject lineObject1(
+      southWest,southEast,ReLeMesh::TriangleObject::Role::Active); 
+    ReLeMesh::LineObject lineObject2(
+      southEast,southWest,ReLeMesh::TriangleObject::Role::Active);
+}
+int main()
+{
     std::cout << "Hello World!" << std::endl;
 
+    unitTest_Objects();
     unitTest_Basic2dEnvironmentRender();
+    unitTest_AbstractEnvironment();
+    unitTest_WorldGenerator();
 
     return 0;
 }

@@ -11,11 +11,6 @@ ReLeMesh::TriangleObject::TriangleObject(
     std::cout << "TriangleObject Created" << std::endl;
 }
 
-ReLeMesh::TriangleObject::TriangleObject()
-{
-    std::cout << "TriangleObject Created" << std::endl;
-}
-
 double ReLeMesh::TriangleObject::calculateArea() const
 {
     return 0.0;

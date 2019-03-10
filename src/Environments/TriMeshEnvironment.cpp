@@ -9,7 +9,7 @@ ReLeMesh::AbstractEnvironment(environmentSize)
 
 long ReLeMesh::TriMeshEnvironment::getMaxNumberOfHeros() const
 {
-    return 1000; //TODO
+    return long(1000); //TODO
 }
 
 double ReLeMesh::TriMeshEnvironment::getIdealObjectArea(const array1dInt point1)

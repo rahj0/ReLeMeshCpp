@@ -35,6 +35,8 @@ std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
 {
     integer lengthX = point2[0]-point1[0];
     integer lengthY = point2[1]-point1[1];
+    std::cout<< point1[0] << " " << point1[1] << std::endl;
+    std::cout<< point2[0] << " " << point2[1] << std::endl;
 
     integer lengthMax = std::max(abs(lengthX),abs(lengthY));
 
@@ -44,7 +46,7 @@ std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
     integer firstSection = int( maxOdd ? lengthMax/2 : (lengthMax-1)/2);
 
     std::vector<array1dInt> pixels = {{point1[0],point1[1]}};
-        
+    std::cout<< lengthMax << std::endl;
     for(integer i = 0; i < lengthMax; ++i){
         std::vector<integer> x = valueLeft(i,point1[0],point2[0],lengthMax);
         std::vector<integer> y = valueLeft(i,point1[1],point2[1],lengthMax);
@@ -78,6 +80,7 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
     //     assert(channelState.size() == _sizeX);
     // }
     float intensity = 1;
+    float intensityNodes = 2;
     // object.intensity = 0.75
     auto southWestCorner = object->getSouthWest();
     auto southEastCorner = object->getSouthEast();
@@ -95,9 +98,13 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
         // auto northEastCornerX
         // auto northEastCornerY) = object.getNorthEast()
     
+    std::cout << "pixelsSouth Render" << std::endl;
     auto pixelsSouth = computePixelsFromLine(southEastCorner,southWestCorner);
+    std::cout << "pixelsWest Render" << std::endl;
     auto pixelsWest = computePixelsFromLine(southWestCorner,northWestCorner);
+    std::cout << "pixelsNorth Render" << std::endl;
     auto pixelsNorth = computePixelsFromLine(northEastCorner,northWestCorner);
+    std::cout << "pixelsEast Render" << std::endl;
     auto pixelsEast = computePixelsFromLine(southEastCorner,northEastCorner);
         
     // if(object->getRole() == AbstractObject::Role::Active){
@@ -131,13 +138,13 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
         std::cout << "Pixel S: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }
-    if(object->getRole() == AbstractObject::Role::Active){
-        channelState[pixelsWest[0][0]][pixelsWest[0][1]] = 1.0;
-        channelState[pixelsEast[0][0]][pixelsEast[0][1]] = 1.0;
+    if(object->getRole() != AbstractObject::Role::Active){
+        channelState[pixelsWest[0][0]][pixelsWest[0][1]] = intensityNodes;
+        channelState[pixelsEast[0][0]][pixelsEast[0][1]] = intensityNodes;
     }
 
-    channelState[pixelsWest.back()[0]][pixelsWest.back()[1]] = 1;
-    channelState[pixelsEast.back()[0]][pixelsEast.back()[1]] = 1;
+    channelState[pixelsWest.back()[0]][pixelsWest.back()[1]] = intensityNodes;
+    channelState[pixelsEast.back()[0]][pixelsEast.back()[1]] = intensityNodes;
     
     return true;
 }
@@ -152,6 +159,7 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderEnv(
     // TODO idea. do vec vec of usigned int 
 
     for(auto& object : objects){
+        std::cout << "Object Render" << std::endl;
         bool ok = renderObject(
             object,state[_roleChannels[object->getRole()]]);
         if(!ok){

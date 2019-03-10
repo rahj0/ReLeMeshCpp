@@ -13,7 +13,6 @@ namespace ReLeMesh
             coordinate southEast,
             coordinate north,
             Role role);
-        TriangleObject();
 
         double calculateArea() const;
         virtual bool changeNorthWest(const coordinate changeVector) override;

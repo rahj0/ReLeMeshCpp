@@ -20,6 +20,9 @@ unitTester: src/unitTester.cpp
 	$(CC) $(LDFLAGS) src/Environments/Rendering/Basic2dEnvironmentRender.cpp -c -o lib/Basic2dEnvironmentRender.o $(INC)
 	$(CC) $(LDFLAGS) src/Environments/AbstractEnvironment.cpp  $(INC) -c -o lib/AbstractEnvironment.o
 	$(CC) $(LDFLAGS) src/Environments/TriMeshEnvironment.cpp $(INC) -c -o lib/TriMeshEnvironment.o
+	$(CC) $(LDFLAGS) src/WorldGenerators/AbstractWorldGenerator.cpp $(INC) -c -o lib/AbstractWorldGenerator.o
+	$(CC) $(LDFLAGS) src/WorldGenerators/SimpleWorldGenerator.cpp $(INC) -c -o lib/SimpleWorldGenerator.o
+
 
 	$(CC) $(LDFLAGS) src/unitTester.cpp lib/* -o bin/unitTester
 	#$(CC) $(LDFLAGS) src/ccTester.cpp  $(INC) $(LIB) -c -o bin/ccTester
@@ -27,3 +30,6 @@ unitTester: src/unitTester.cpp
 
 clean:
 	rm -f bin/** lib/**
+
+test:
+	./bin/unitTester

@@ -25,7 +25,6 @@ void unitTest_Basic2dEnvironmentRender()
     coordinate p14 {8,1};
 
     coordinate p21 {7,7};
-    coordinate p22 {4,3};
     coordinate p23 {9,3};
 
     objects.push_back(std::unique_ptr<TriangleObject>(
@@ -40,8 +39,8 @@ void unitTest_Basic2dEnvironmentRender()
     envRender.renderEnv(objects,state);
 
     for(auto& matrix : state){
-        for(int j = matrix.front().size()-1; j >= 0; --j){
-            for(int i = 0; i < matrix.size(); ++i){
+        for(int j = int(matrix.front().size()-1); j >= 0; --j){
+            for(size_t i = 0; i < matrix.size(); ++i){
                 cout << matrix[i][j] << " ";
             }
             cout << endl;
@@ -55,6 +54,15 @@ void unitTest_AbstractEnvironment()
     int size = 10;
     ReLeMesh::TriMeshEnvironment testEnv({size,size});
     std::cout << testEnv.getMaxNumberOfHeros() << std::endl;
+    testEnv.step(0);
+    testEnv.step(1);
+    testEnv.step(2);
+    testEnv.step(3);
+    testEnv.step(4);
+    testEnv.step(5);
+    testEnv.step(6);
+    testEnv.step(7);
+    testEnv.step(8);
 }
 void unitTest_WorldGenerator()
 {
@@ -68,8 +76,8 @@ void unitTest_WorldGenerator()
     vector<vector<vector<float>>> state;
     envRender.renderEnv(objects,state);
     for(auto& matrix : state){
-        for(int j = matrix.front().size()-1; j >= 0; --j){
-            for(int i = 0; i < matrix.size(); ++i){
+        for(int j = int(matrix.front().size()-1); j >= 0; --j){
+            for(size_t i = 0; i < matrix.size(); ++i){
                 cout << matrix[i][j] << " ";
             }
             cout << endl;

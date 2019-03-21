@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <memory>
+#include <tuple>
 
 #include "../gameObjects/AbstractObject.hh"
 #include "Rendering/Basic2dEnvironmentRender.hh"
@@ -43,8 +44,8 @@ namespace ReLeMesh
 
         virtual double getIdealObjectArea(const array1dInt point1) = 0;
         virtual void createNewHero() = 0;
-        virtual void convertStepInput() = 0; // This might need to return tuple
-
+        virtual std::tuple<coordinate,coordinate,bool> 
+            convertStepInput(const unsigned int action) const = 0;
     private:
         const std::array<int,ReLeMesh_N_DIM> _size;
         std::vector<std::unique_ptr<AbstractObject>> _objects;

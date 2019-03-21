@@ -40,11 +40,6 @@ std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
 
     integer lengthMax = std::max(abs(lengthX),abs(lengthY));
 
-    integer xOdd = (lengthX % 2 != 0 );
-    integer yOdd = (lengthY % 2 != 0 );
-    integer maxOdd = (lengthMax % 2 != 0 );
-    integer firstSection = int( maxOdd ? lengthMax/2 : (lengthMax-1)/2);
-
     std::vector<array1dInt> pixels = {{point1[0],point1[1]}};
     std::cout<< lengthMax << std::endl;
     for(integer i = 0; i < lengthMax; ++i){
@@ -66,9 +61,9 @@ std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
   
         pixels.push_back({point2[0],point2[1]});
     }
-    for(auto& pixel : pixels){
-        std::cout << "Pixel: " << pixel[0] << "," << pixel[1] << std::endl;
-    }   
+    // for(auto& pixel : pixels){
+    //     std::cout << "Pixel: " << pixel[0] << "," << pixel[1] << std::endl;
+    // }   
     return pixels;
 }
 
@@ -123,11 +118,11 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
 // }
             
     for(auto& pixel : pixelsWest){
-        std::cout << "Pixel W: " << pixel[0] << "," << pixel[1] << std::endl;
+        // std::cout << "Pixel W: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }
     for(auto& pixel : pixelsNorth){
-        std::cout << "Pixel N: " << pixel[0] << "," << pixel[1] << std::endl;
+        // std::cout << "Pixel N: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }  
     for(auto& pixel : pixelsEast){
@@ -135,7 +130,7 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
         channelState[pixel[0]][pixel[1]] = intensity;
         }               
     for(auto& pixel : pixelsSouth){
-        std::cout << "Pixel S: " << pixel[0] << "," << pixel[1] << std::endl;
+        // std::cout << "Pixel S: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }
     if(object->getRole() != AbstractObject::Role::Active){

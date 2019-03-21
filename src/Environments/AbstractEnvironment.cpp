@@ -1,4 +1,7 @@
 #include "AbstractEnvironment.hh"
+
+#include <iostream>
+
 using ReLeMesh::tensor;
 using ReLeMesh::integer;
 using ReLeMesh::AbstractObject;
@@ -11,6 +14,14 @@ _size(environmentSize)
 }
 void ReLeMesh::AbstractEnvironment::step(const unsigned action)
 {
+    std::cout << "step with action: " << action << std::endl;
+    auto [northWest,northEast,newHero] = convertStepInput(action);
+
+    std::cout << "NorthWest: " << northWest[0] << northWest[1] << std::endl;    
+    std::cout << "NorthEast: " << northEast[0] << northEast[1] << std::endl;
+    if(newHero){
+        std::cout << "New Hero"<< std::endl;
+    }
 
 } // This might need to return tuple
 void ReLeMesh::AbstractEnvironment::reset()

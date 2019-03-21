@@ -1,5 +1,5 @@
 CFLAGS = -Wall -pedantic -std=c++17
-CC = g++
+CC = g++ $(CFLAGS)
 SRCDIR := src
 BUILDDIR := build
 INC := -I include

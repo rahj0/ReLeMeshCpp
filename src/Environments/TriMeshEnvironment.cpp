@@ -1,4 +1,5 @@
 #include "TriMeshEnvironment.hh"
+#include "../gameObjects/TriangleObject.hh"
 
 using ReLeMesh::coordinate;
 
@@ -18,9 +19,11 @@ double ReLeMesh::TriMeshEnvironment::getIdealObjectArea(const array1dInt point1)
 {
     return 0.0; //TODO
 }
-void ReLeMesh::TriMeshEnvironment::createNewHero()
+std::unique_ptr<ReLeMesh::AbstractObject> ReLeMesh::TriMeshEnvironment::createNewHero()
 {
-
+    coordinate p1 {8,1};
+    coordinate p2 {7,7};
+    return std::make_unique<TriangleObject>(p1,p2, AbstractObject::Role::Active);
 }
 std::tuple<coordinate,coordinate,bool>
 ReLeMesh::TriMeshEnvironment::convertStepInput(const unsigned int input) const

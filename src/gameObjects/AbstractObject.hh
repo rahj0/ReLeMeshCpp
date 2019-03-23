@@ -12,7 +12,7 @@ namespace ReLeMesh
     const ReLeMesh_COORD_TYPE nDim = ReLeMesh_N_DIM;
     typedef std::array<ReLeMesh_COORD_TYPE,ReLeMesh_N_DIM> coordinate;
     typedef std::array<ReLeMesh_COORD_TYPE,ReLeMesh_N_DIM> array1dInt;
-    typedef int integer;
+    typedef ReLeMesh_COORD_TYPE integer;
 
     class AbstractObject 
     {

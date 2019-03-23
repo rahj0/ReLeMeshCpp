@@ -8,6 +8,7 @@
 #include "WorldGenerators/SimpleWorldGenerator.hh"
 
 #include <memory>
+#include <assert.h>
 
 using ReLeMesh::TriangleObject;
 using ReLeMesh::coordinate;
@@ -51,6 +52,7 @@ void unitTest_Basic2dEnvironmentRender()
 
 void unitTest_AbstractEnvironment()
 {
+    std::cout << "--------- unitTest_AbstractEnvironment --------" << std::endl;
     int size = 10;
     ReLeMesh::TriMeshEnvironment testEnv({size,size});
     std::cout << testEnv.getMaxNumberOfHeros() << std::endl;
@@ -63,13 +65,23 @@ void unitTest_AbstractEnvironment()
     testEnv.step(6);
     testEnv.step(7);
     testEnv.step(8);
+    testEnv.printState();
+    std::cout << "--------- end of: unitTest_AbstractEnvironment --------" << std::endl;
+    
 }
+
 void unitTest_WorldGenerator()
 {
+    std::cout << "------ unitTest_WorldGenerator -----" << std::endl;
     int size = 10;
     ReLeMesh::SimpleWorldGenerator generator;
     auto objects = generator.generate({size,size});
-    
+    auto startObjects = generator.takeStartObjects();
+    std::cout <<"Size1" << startObjects.size() << std::endl;
+    assert(!startObjects.empty() );
+    auto startObjects2 = generator.takeStartObjects();
+    std::cout <<"Size2" << startObjects2.size() << std::endl;
+    assert(startObjects2.empty() );
     std::cout << "Basic2dEnvironmentRender" << std::endl;
     ReLeMesh::Basic2dEnvironmentRender envRender({size,size});
 

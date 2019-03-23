@@ -1,6 +1,9 @@
 #include "AbstractEnvironment.hh"
 
+#include "../WorldGenerators/SimpleWorldGenerator.hh"
+
 #include <iostream>
+#include <math.h>
 
 using ReLeMesh::tensor;
 using ReLeMesh::integer;
@@ -8,11 +11,27 @@ using ReLeMesh::AbstractObject;
 
 ReLeMesh::AbstractEnvironment::
 AbstractEnvironment(const array1dInt environmentSize) :
-_size(environmentSize)
+_size(environmentSize), _overlappingPixelPenalty(8), // TODO remove hardcoded values
+_cornerMatchBonus(10) ,_render(environmentSize)
 {
+    _worldGenerator = std::make_unique<SimpleWorldGenerator>();
     static_assert(environmentSize.size() > 1);
+    reset();
 }
-void ReLeMesh::AbstractEnvironment::step(const unsigned action)
+
+void ReLeMesh::AbstractEnvironment::reset()
+{
+    if(_worldGenerator){
+        _objects = _worldGenerator->generate(_size);
+        _startObjects = _worldGenerator->takeStartObjects();
+    }
+    _actions.clear();
+    _done = false;
+    _totalReward = 0.0;
+    _bonusNormalisationValue = _cornerMatchBonus; // TODO: get the ideal area from world generator getIdealObjectArea(_centerOfFocus);
+}
+
+std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsigned action)
 {
     std::cout << "step with action: " << action << std::endl;
     auto [northWest,northEast,newHero] = convertStepInput(action);
@@ -22,11 +41,52 @@ void ReLeMesh::AbstractEnvironment::step(const unsigned action)
     if(newHero){
         std::cout << "New Hero"<< std::endl;
     }
+    if(_objects.empty()){
+        std::cout << "empty"<< std::endl;
+        throw "No objects created in environment";
+    }
+    _actions.push_back(action);
+    if(_done){    
+        return {0.0,_done,_stateTensor};
+    }
 
-} // This might need to return tuple
-void ReLeMesh::AbstractEnvironment::reset()
-{
-    _actionCount = 0;
+    double reward = -0.5;
+    if(newHero){
+        saveHeroAsWall(); // TODO: function does nothing
+        if(_useCenterOfFocus){
+            pushToFrontStarterObjectNearestToPoint(_centerOfFocus); // TODO: function does nothing
+        }
+        if(!_startObjects.empty() && _nHeros < getMaxNumberOfHeros() ){
+            _objects.push_back(createNewHero());
+        } else {
+            _done = true;
+        }
+    } else {
+        getHero()->changeNorthEast(northEast);
+        getHero()->changeNorthWest(northWest);
+    }
+    resizeObjToFitEnv(getHero());
+        
+    if(newHero) {
+        _currentBonusValue = 0;
+    }
+    renderEnv(); // Here we should only do a light render if it is not a new hero.
+            
+    auto idealArea = getIdealObjectArea(getHero()->getCenterPoint());// atm ideal area is not a function of the coordinates
+    auto actualArea = getHero()->calculateArea();
+    auto newBonusValue = actualArea;
+    newBonusValue -= pow(abs(actualArea-idealArea),1.5);
+    std::cout << "Area: " << actualArea << std::endl << "idealArea:" << 
+    idealArea << std::endl << "Penalty: " << pow(abs(actualArea-idealArea),1.5) << std::endl;
+
+    newBonusValue -= countOverlappingPixels()*_overlappingPixelPenalty;
+    newBonusValue += calculateFinishedObjectBonusReward();
+    reward += newBonusValue - _currentBonusValue*_bonusNormalisationValue;
+    _currentBonusValue = newBonusValue / _bonusNormalisationValue;
+    reward =  reward / _bonusNormalisationValue;
+    _totalReward += reward;
+    
+    return {reward,_done,_stateTensor};
 }
 
 void ReLeMesh::AbstractEnvironment::setSeed(const int newSeed) 
@@ -42,6 +102,19 @@ const tensor& ReLeMesh::AbstractEnvironment::getState() const
 {
     return _stateTensor;
 } // TODO
+void ReLeMesh::AbstractEnvironment::printState() const 
+{
+    for(auto& matrix : _stateTensor){
+        for(int j = int(matrix.front().size()-1); j >= 0; --j){
+            for(size_t i = 0; i < matrix.size(); ++i){
+                std::cout << matrix[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+}
+
 integer ReLeMesh::AbstractEnvironment::getSizeX() const 
 {
     return _size[0];
@@ -52,7 +125,7 @@ integer ReLeMesh::AbstractEnvironment::getSizeY() const
 }
 integer ReLeMesh::AbstractEnvironment::getActionCount() const 
 { 
-    return _actionCount;
+    return _actions.size();
 }
 integer ReLeMesh::AbstractEnvironment::getChannelCount() const 
 {
@@ -67,10 +140,10 @@ std::unique_ptr<AbstractObject>& ReLeMesh::AbstractEnvironment::getHero()
 {
     return _objects.back();
 } // is this needed ?
-void ReLeMesh::AbstractEnvironment::moveChar()
-{ 
+// void ReLeMesh::AbstractEnvironment::moveChar()
+// { 
 
-} // This might need to return tuple
+// } // This might need to return tuple
 integer ReLeMesh::AbstractEnvironment::countOverlappingPixels()
 { 
     return 0;
@@ -81,10 +154,10 @@ double ReLeMesh::AbstractEnvironment::calculateFinishedObjectBonusReward() const
 }// Move to analyser class ?
 void ReLeMesh::AbstractEnvironment::renderEnv()
 { 
-
+    _render.renderEnv(_objects,_stateTensor);
 } 
 
-void ReLeMesh::AbstractEnvironment::resizeObjToFitEnv(AbstractObject& object)
+void ReLeMesh::AbstractEnvironment::resizeObjToFitEnv(std::unique_ptr<AbstractObject>& object)
 {
 
 }// Move to environment handler class ?

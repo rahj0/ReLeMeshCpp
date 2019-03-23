@@ -16,10 +16,8 @@ namespace ReLeMesh
     {
     public:
         Basic2dEnvironmentRender(const std::array<integer,2> envSize);
-        Basic2dEnvironmentRender(const int test);
-        Basic2dEnvironmentRender();
 
-        static std::vector<array1dInt> computePixelsFromLine(const array1dInt point1, const array1dInt point2);
+        static std::vector<coordinate> computePixelsFromLine(const coordinate point1, const coordinate point2);
         bool renderObject(const std::unique_ptr<AbstractObject>& object, std::vector<std::vector<float>>& channelState);
         bool renderEnv(const std::vector<std::unique_ptr<AbstractObject>>& objects, 
         tensor& channelState);
@@ -30,7 +28,7 @@ namespace ReLeMesh
         std::map<AbstractObject::Role,int> _roleChannels;
 
         array1dInt calculateXYmoveUnitVector(
-            const array1dInt point1,const array1dInt point2);   
+            const coordinate point1,const coordinate point2);   
         static std::vector<integer> valueLeft(const integer index,const integer minValue,
         const integer maxValue,const integer maxIndex);
     };

@@ -1,4 +1,4 @@
-CFLAGS = -Wall -pedantic -std=c++17
+CFLAGS = -Wall -pedantic -std=c++17 -fPIC
 CC = g++ $(CFLAGS)
 SRCDIR := src
 BUILDDIR := build
@@ -27,9 +27,13 @@ unitTester: src/unitTester.cpp
 	$(CC) $(LDFLAGS) src/unitTester.cpp lib/* -o bin/unitTester
 	#$(CC) $(LDFLAGS) src/ccTester.cpp  $(INC) $(LIB) -c -o bin/ccTester
 	$(CC) $(LDFLAGS) src/testInterFace.cpp -shared -fPIC -o bin/testInterface.so
+	$(CC) $(LDFLAGS) src/ReLeMeshInterface.cpp -shared lib/* -o bin/ReLeMeshInterface.so
 
 clean:
 	rm -f bin/** lib/**
 
 test:
 	./bin/unitTester
+
+pyTest:
+	python3 src/test.py

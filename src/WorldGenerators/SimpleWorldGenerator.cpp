@@ -19,7 +19,6 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         integer maxX = worldSizeX - 1;
         integer maxY = worldSizeY - 1;
         std::vector<std::unique_ptr<AbstractObject>> objects;
-        std::vector<LineObject> startObjects;
         // TODO: Add checks that worldSizeX is bigger than _maxDeviations for x and y
         
         integer baseXLineLength = int(worldSizeX/_nHorisontalLines);
@@ -45,8 +44,8 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
             }
             integer newY = minY; //TODO + self.generateRandomDeviation(0,self._maxDeviationX)
             
-            startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
-            objects.push_back(std::make_unique<LineObject>(startObjects.back()));
+            _startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
+            objects.push_back(std::make_unique<LineObject>(_startObjects.back()));
             lastY = newY;
             lastX = newX;
         }
@@ -70,8 +69,8 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
                     // newY += self.generateRandomDeviation(-self._maxDeviationY,self._maxDeviationY);
                 }
                 integer newX = minX;// TODO + self.generateRandomDeviation(0,self._maxDeviationX)
-                startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined)); // TODO: Add 
-                objects.push_back(std::make_unique<LineObject>(startObjects.back()));
+                _startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined)); // TODO: Add 
+                objects.push_back(std::make_unique<LineObject>(_startObjects.back()));
                 lastY = newY;
                 lastX = newX; 
     
@@ -101,8 +100,8 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
                 integer newY = maxY; //TODO - self.generateRandomDeviation(0,self._maxDeviationX)
                 
 
-                startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
-                objects.push_back(std::make_unique<LineObject>(startObjects.back()));
+                _startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
+                objects.push_back(std::make_unique<LineObject>(_startObjects.back()));
                 lastY = newY;
                 lastX = newX;   
             }
@@ -128,8 +127,8 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
                     // newY += self.generateRandomDeviation(-self._maxDeviationY,self._maxDeviationY)
                 }
                 
-                startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
-                objects.push_back(std::make_unique<LineObject>(startObjects.back()));
+                _startObjects.push_back(LineObject({lastX,lastY},{newX,newY},AbstractObject::PreDefined));
+                objects.push_back(std::make_unique<LineObject>(_startObjects.back()));
                 lastY = newY;
                 lastX = newX;   
         }

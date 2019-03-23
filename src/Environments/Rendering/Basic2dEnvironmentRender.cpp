@@ -5,6 +5,7 @@
 
 using ReLeMesh::integer;
 using ReLeMesh::array1dInt;
+using ReLeMesh::coordinate;
 
 ReLeMesh::Basic2dEnvironmentRender::Basic2dEnvironmentRender(const std::array<integer,2> envSize) :
 _sizeX(envSize[0]), _sizeY(envSize[1])
@@ -14,24 +15,8 @@ _sizeX(envSize[0]), _sizeY(envSize[1])
     _roleChannels[AbstractObject::Role::PreDefined] = 1;
 }
 
-ReLeMesh::Basic2dEnvironmentRender::Basic2dEnvironmentRender(const int test) :
-_sizeX(1), _sizeY(1)
-{
-    _roleChannels[AbstractObject::Role::Active] = 0;
-    _roleChannels[AbstractObject::Role::Locked] = 1;
-    _roleChannels[AbstractObject::Role::PreDefined] = 1;
-}
-
-ReLeMesh::Basic2dEnvironmentRender::Basic2dEnvironmentRender() :
-_sizeX(1), _sizeY(1)
-{
-    _roleChannels[AbstractObject::Role::Active] = 0;
-    _roleChannels[AbstractObject::Role::Locked] = 1;
-    _roleChannels[AbstractObject::Role::PreDefined] = 1;
-}
-
-std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLine(
-    const array1dInt point1, const array1dInt point2)
+std::vector<coordinate> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLine(
+    const coordinate point1, const coordinate point2)
 {
     integer lengthX = point2[0]-point1[0];
     integer lengthY = point2[1]-point1[1];
@@ -40,7 +25,7 @@ std::vector<array1dInt> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
 
     integer lengthMax = std::max(abs(lengthX),abs(lengthY));
 
-    std::vector<array1dInt> pixels = {{point1[0],point1[1]}};
+    std::vector<coordinate> pixels = {{point1[0],point1[1]}};
     std::cout<< lengthMax << std::endl;
     for(integer i = 0; i < lengthMax; ++i){
         std::vector<integer> x = valueLeft(i,point1[0],point2[0],lengthMax);
@@ -167,7 +152,7 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderEnv(
 }
 
 array1dInt ReLeMesh::
-Basic2dEnvironmentRender::calculateXYmoveUnitVector(const array1dInt point1,const array1dInt point2)
+Basic2dEnvironmentRender::calculateXYmoveUnitVector(const coordinate point1,const coordinate point2)
 {
     integer xDiff = point2[0]-point1[0];
     integer yDiff = point2[1]-point1[1]; 

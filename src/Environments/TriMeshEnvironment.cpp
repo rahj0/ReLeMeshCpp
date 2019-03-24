@@ -1,5 +1,6 @@
 #include "TriMeshEnvironment.hh"
 #include "../gameObjects/TriangleObject.hh"
+#include <iostream>
 
 using ReLeMesh::coordinate;
 
@@ -7,7 +8,10 @@ ReLeMesh::TriMeshEnvironment::
 TriMeshEnvironment(const std::array<int,ReLeMesh_N_DIM> environmentSize) :
 ReLeMesh::AbstractEnvironment(environmentSize)
 {
-
+    for(auto& size : environmentSize){
+        std::cout <<"size: "<< size << std::endl;
+    }
+    reset();
 }
 
 long ReLeMesh::TriMeshEnvironment::getMaxNumberOfHeros() const
@@ -21,8 +25,8 @@ double ReLeMesh::TriMeshEnvironment::getIdealObjectArea(const array1dInt point1)
 }
 std::unique_ptr<ReLeMesh::AbstractObject> ReLeMesh::TriMeshEnvironment::createNewHero()
 {
-    coordinate p1 {8,1};
-    coordinate p2 {7,7};
+    coordinate p1 {1,3};
+    coordinate p2 {7,2};
     return std::make_unique<TriangleObject>(p1,p2, AbstractObject::Role::Active);
 }
 std::tuple<coordinate,coordinate,bool>

@@ -57,6 +57,11 @@ void unitTest_AbstractEnvironment()
     ReLeMesh::TriMeshEnvironment testEnv({size,size});
     std::cout << testEnv.getMaxNumberOfHeros() << std::endl;
     testEnv.step(0);
+    std::cout << "Action" << std::endl;
+    testEnv.printState();
+
+    std::cout << testEnv.getMaxNumberOfHeros() << std::endl;
+    std::cout << "Action" << std::endl;
     testEnv.step(1);
     testEnv.step(2);
     testEnv.step(3);

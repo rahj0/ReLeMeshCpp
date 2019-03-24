@@ -20,13 +20,11 @@ std::vector<coordinate> ReLeMesh::Basic2dEnvironmentRender::computePixelsFromLin
 {
     integer lengthX = point2[0]-point1[0];
     integer lengthY = point2[1]-point1[1];
-    std::cout<< point1[0] << " " << point1[1] << std::endl;
-    std::cout<< point2[0] << " " << point2[1] << std::endl;
+
 
     integer lengthMax = std::max(abs(lengthX),abs(lengthY));
 
     std::vector<coordinate> pixels = {{point1[0],point1[1]}};
-    std::cout<< lengthMax << std::endl;
     for(integer i = 0; i < lengthMax; ++i){
         std::vector<integer> x = valueLeft(i,point1[0],point2[0],lengthMax);
         std::vector<integer> y = valueLeft(i,point1[1],point2[1],lengthMax);
@@ -66,56 +64,22 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
     auto southEastCorner = object->getSouthEast();
     auto northWestCorner = object->getNorthWest();
     auto northEastCorner = object->getNorthEast();
-    
-    std::cout << southWestCorner[0] << std::endl;
-    std::cout << southWestCorner[1] << std::endl;
-    std::cout << southEastCorner[0] << std::endl;
-    std::cout << southEastCorner[1] << std::endl;
-    std::cout << northWestCorner[0] << std::endl;
-    std::cout << northWestCorner[1] << std::endl;
-    std::cout << northEastCorner[0] << std::endl;
-    std::cout << northEastCorner[1] << std::endl;
-        // auto northEastCornerX
-        // auto northEastCornerY) = object.getNorthEast()
-    
-    std::cout << "pixelsSouth Render" << std::endl;
+
     auto pixelsSouth = computePixelsFromLine(southEastCorner,southWestCorner);
-    std::cout << "pixelsWest Render" << std::endl;
     auto pixelsWest = computePixelsFromLine(southWestCorner,northWestCorner);
-    std::cout << "pixelsNorth Render" << std::endl;
     auto pixelsNorth = computePixelsFromLine(northEastCorner,northWestCorner);
-    std::cout << "pixelsEast Render" << std::endl;
     auto pixelsEast = computePixelsFromLine(southEastCorner,northEastCorner);
-        
-    // if(object->getRole() == AbstractObject::Role::Active){
-    //         bool  wrongMove = false;
-            // TODO Find way to replace this
-            // if [northWestCornerX,northWestCornerY] in pixelsWest[:-1]:
-            //     wrongMove = True
-            // elif [northWestCornerX,northWestCornerY] in pixelsEast[:-1]:
-            //     wrongMove = True
-            // elif [northEastCornerX,northEastCornerY] in pixelsWest[:-1]:
-            //     wrongMove = True
-            // elif [northEastCornerX,northEastCornerY] in pixelsEast[:-1]:
-            //     wrongMove = True
-            // if wrongMove:
-            //     return [False, 0]
-// }
             
     for(auto& pixel : pixelsWest){
-        // std::cout << "Pixel W: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }
     for(auto& pixel : pixelsNorth){
-        // std::cout << "Pixel N: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }  
     for(auto& pixel : pixelsEast){
-        // std::cout << "Pixel E: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
         }               
     for(auto& pixel : pixelsSouth){
-        // std::cout << "Pixel S: " << pixel[0] << "," << pixel[1] << std::endl;
         channelState[pixel[0]][pixel[1]] = intensity;
     }
     if(object->getRole() != AbstractObject::Role::Active){
@@ -125,7 +89,6 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderObject(
 
     channelState[pixelsWest.back()[0]][pixelsWest.back()[1]] = intensityNodes;
     channelState[pixelsEast.back()[0]][pixelsEast.back()[1]] = intensityNodes;
-    
     return true;
 }
 bool ReLeMesh::Basic2dEnvironmentRender::renderEnv(
@@ -137,9 +100,8 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderEnv(
     std::vector<std::vector<float>>(_sizeX,std::vector<float>(_sizeY)));
     // TODO Optimize
     // TODO idea. do vec vec of usigned int 
-
+    
     for(auto& object : objects){
-        std::cout << "Object Render" << std::endl;
         bool ok = renderObject(
             object,state[_roleChannels[object->getRole()]]);
         if(!ok){

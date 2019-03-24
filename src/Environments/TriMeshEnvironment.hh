@@ -11,7 +11,9 @@ namespace ReLeMesh
     {
     public:
         TriMeshEnvironment(const std::array<int,ReLeMesh_N_DIM> envSize);
+        virtual ~TriMeshEnvironment() {}
         long getMaxNumberOfHeros() const;
+
 
     protected:
         double getIdealObjectArea(const array1dInt point1);

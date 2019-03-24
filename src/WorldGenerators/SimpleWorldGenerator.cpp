@@ -34,7 +34,6 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         //       Next step is to split it up in to functions to get rid of the code duplication.
 
         for(integer i = 0; i <_nHorisontalLines; ++i){
-            std::cout << "Test1" << i << std::endl;
             integer newX = lastX + baseXLineLength;
             if(i == _nHorisontalLines-1){
                 newX = maxX;
@@ -60,7 +59,6 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         integer northWestX, northWestY;
         if(true){ //TODO 
             for(integer i = 0; i <_nVerticalLines; ++i){
-                std::cout << "Test2" << i << std::endl;
                 integer newY = lastY + baseYLineLength;
                 if(i == _nVerticalLines-1){
                     newY = maxY;
@@ -88,8 +86,6 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         if(true){
             //# print("northWest to northEast")
             for(integer i = 0; i <_nHorisontalLines; ++i){
-
-                std::cout << "Test3" << i << std::endl;
                 integer newX = lastX + baseXLineLength;
                 if(i == _nHorisontalLines-1){
                     newX = maxX;
@@ -115,8 +111,6 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         if(true){
         //# print("southEast to northEast")    
             for(integer i = 0; i <_nHorisontalLines; ++i){
-
-                std::cout << "Test4" << i << std::endl;
                 integer newY = lastY + baseYLineLength;
                 integer newX = maxX; // TODO - self.generateRandomDeviation(0,self._maxDeviationX)
                 if(i == _nVerticalLines-1){

@@ -16,7 +16,6 @@ _cornerMatchBonus(10) ,_render(environmentSize)
 {
     _worldGenerator = std::make_unique<SimpleWorldGenerator>();
     static_assert(environmentSize.size() > 1);
-    reset();
 }
 
 void ReLeMesh::AbstractEnvironment::reset()
@@ -28,7 +27,23 @@ void ReLeMesh::AbstractEnvironment::reset()
     _actions.clear();
     _done = false;
     _totalReward = 0.0;
+    _currentBonusValue = 0.0;
     _bonusNormalisationValue = _cornerMatchBonus; // TODO: get the ideal area from world generator getIdealObjectArea(_centerOfFocus);
+
+    //     shuffle(self.startObjects) // TODO: Add shuffle
+    _objects.push_back(createNewHero());
+    ++_nHeros;
+    for(auto& obj : _objects){
+        resizeObjToFitEnv(obj); // Do we need to check all objects ?
+    }
+
+    renderEnv(); 
+
+    //     actualArea = self.objects[-1].getArea()
+    //     self._currentBonusValue = actualArea- pow(abs(actualArea-self.getIdealObjectArea(0,0)),1.50)
+    //     self._currentBonusValue /= self._normaliseValue
+    //     return self._state
+
 }
 
 std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsigned action)
@@ -66,12 +81,11 @@ std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsign
         getHero()->changeNorthWest(northWest);
     }
     resizeObjToFitEnv(getHero());
-        
+    
     if(newHero) {
         _currentBonusValue = 0;
     }
     renderEnv(); // Here we should only do a light render if it is not a new hero.
-            
     auto idealArea = getIdealObjectArea(getHero()->getCenterPoint());// atm ideal area is not a function of the coordinates
     auto actualArea = getHero()->calculateArea();
     auto newBonusValue = actualArea;

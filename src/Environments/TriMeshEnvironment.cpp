@@ -25,8 +25,12 @@ double ReLeMesh::TriMeshEnvironment::getIdealObjectArea(const array1dInt point1)
 }
 std::unique_ptr<ReLeMesh::AbstractObject> ReLeMesh::TriMeshEnvironment::createNewHero()
 {
-    coordinate p1 {1,3};
-    coordinate p2 {7,2};
+    coordinate p1 {0,0};
+    coordinate p2 {1,1};
+    if(! _startObjects.empty()){
+        p1 =_startObjects.front().getNorthWest();
+        p2 = _startObjects.front().getNorthEast();
+    }
     return std::make_unique<TriangleObject>(p1,p2, AbstractObject::Role::Active);
 }
 std::tuple<coordinate,coordinate,bool>

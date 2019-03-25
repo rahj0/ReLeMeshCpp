@@ -49,11 +49,12 @@ namespace ReLeMesh
         virtual std::unique_ptr<AbstractObject> createNewHero() = 0;
         virtual std::tuple<coordinate,coordinate,bool> 
             convertStepInput(const unsigned int action) const = 0;
-
+            
+        std::vector<LineObject> _startObjects;
+        
     private:
         const array1dInt _size;
         std::vector<std::unique_ptr<AbstractObject>> _objects;
-        std::vector<LineObject> _startObjects;
         tensor _stateTensor;
         std::vector<integer> _actions;
         bool _done;

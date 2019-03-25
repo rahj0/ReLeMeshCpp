@@ -4,13 +4,14 @@ The project is written in c++17.
 
 ### Prerequisites
 
-Project is tested on Ubuntu 18.10
-Using g++ 8.2.0
+*  Project is tested on Ubuntu 18.10
+*  Using g++ 8.2.0
 
 ## Getting Started
 
 To build the shared lib simply
 ```
+mkdir lib && mkdir bin
 make
 ```
 

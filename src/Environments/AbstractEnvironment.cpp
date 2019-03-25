@@ -27,7 +27,6 @@ void ReLeMesh::AbstractEnvironment::reset()
     _actions.clear();
     _done = false;
     _totalReward = 0.0;
-    _currentBonusValue = 0.0;
     _bonusNormalisationValue = _cornerMatchBonus; // TODO: get the ideal area from world generator getIdealObjectArea(_centerOfFocus);
 
     //     shuffle(self.startObjects) // TODO: Add shuffle
@@ -38,12 +37,7 @@ void ReLeMesh::AbstractEnvironment::reset()
     }
 
     renderEnv(); 
-
-    //     actualArea = self.objects[-1].getArea()
-    //     self._currentBonusValue = actualArea- pow(abs(actualArea-self.getIdealObjectArea(0,0)),1.50)
-    //     self._currentBonusValue /= self._normaliseValue
-    //     return self._state
-
+    _currentBonusValue = calculateBonusForHero();
 }
 
 std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsigned action)
@@ -86,6 +80,18 @@ std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsign
         _currentBonusValue = 0;
     }
     renderEnv(); // Here we should only do a light render if it is not a new hero.
+    // TODO create reward class ?
+    double newBonusValue = calculateBonusForHero();
+    reward += newBonusValue - _currentBonusValue;
+    _currentBonusValue = newBonusValue;
+    reward =  reward / _bonusNormalisationValue;
+    _totalReward += reward;
+    
+    return {reward,_done,_stateTensor};
+}
+
+double ReLeMesh::AbstractEnvironment::calculateBonusForHero() const
+{
     auto idealArea = getIdealObjectArea(getHero()->getCenterPoint());// atm ideal area is not a function of the coordinates
     auto actualArea = getHero()->calculateArea();
     auto newBonusValue = actualArea;
@@ -95,12 +101,7 @@ std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsign
 
     newBonusValue -= countOverlappingPixels()*_overlappingPixelPenalty;
     newBonusValue += calculateFinishedObjectBonusReward();
-    reward += newBonusValue - _currentBonusValue*_bonusNormalisationValue;
-    _currentBonusValue = newBonusValue / _bonusNormalisationValue;
-    reward =  reward / _bonusNormalisationValue;
-    _totalReward += reward;
-    
-    return {reward,_done,_stateTensor};
+    return 0.0;
 }
 
 void ReLeMesh::AbstractEnvironment::setSeed(const int newSeed) 
@@ -150,17 +151,30 @@ void ReLeMesh::AbstractEnvironment::resetVariables()
 { 
 
 }
+
 std::unique_ptr<AbstractObject>& ReLeMesh::AbstractEnvironment::getHero() 
 {
     return _objects.back();
-} // is this needed ?
-// void ReLeMesh::AbstractEnvironment::moveChar()
-// { 
+} 
 
-// } // This might need to return tuple
-integer ReLeMesh::AbstractEnvironment::countOverlappingPixels()
+const std::unique_ptr<AbstractObject>& ReLeMesh::AbstractEnvironment::getHero() const 
+{
+    return _objects.back();
+} 
+
+integer ReLeMesh::AbstractEnvironment::countOverlappingPixels() const
 { 
-    return 0;
+    integer count = 0;
+    for(auto& matrix: _stateTensor){
+        for(auto& vector: matrix){
+            for(auto& value: vector){
+                if(value > 0.0 && value < 0.6){
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
 } // Move to analyser class ?
 double ReLeMesh::AbstractEnvironment::calculateFinishedObjectBonusReward() const 
 { 
@@ -463,29 +477,3 @@ void ReLeMesh::AbstractEnvironment::pushToFrontStarterObjectNearestToPoint(const
     //                     if self._state[i,j,1] > 0.0:
     //                         count += 1
     //     return count
-    // def renderEnv(self):
-    //     [status,state] =  self._render.renderEnv(self.objects)
-    //     if status:
-    //         self._state = state
-
-    //         # self._state[0] = state[0]
-    //         # self._state[1] = state[1]
-
-    // def refreshEnv(self):
-    //     beforeRender = self._state
-    //     self.renderEnv()
-    //     [status,state] =  self._render.renderEnvObject(self.getHero(),np.zeros([self._yRes,self._xRes]))
-    //     if status:
-    //         beforeRender[:,:,0] = state
-    //     test = np.abs(np.subtract(beforeRender,self._state))
-    //     if np.amax(test) != 0.0:
-    //         print("\n\n")
-    //         print("max: ", np.amax(test))
-    //         self.printStats()
-
-    // def step(self,action):
-    //     self._actions.append(action)
-    //     reward,done = self.moveChar(action)
-    //     self._totalReward += reward
-    //     self._totalSteps += 1
-    //     return self.getState(),reward,done

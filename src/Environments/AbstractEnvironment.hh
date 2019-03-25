@@ -35,8 +35,9 @@ namespace ReLeMesh
     protected:
         void resetVariables(); // private ?
         std::unique_ptr<AbstractObject>& getHero(); // is this needed ?
+        const std::unique_ptr<AbstractObject>& getHero() const; // is this needed ?
         // void moveChar(); // This might need to return tuple
-        integer countOverlappingPixels(); // Move to analyser class ?
+        integer countOverlappingPixels() const; // Move to analyser class ?
         double calculateFinishedObjectBonusReward() const;  // Move to analyser class ?
         void renderEnv(); 
 
@@ -45,14 +46,15 @@ namespace ReLeMesh
         void saveHeroAsWall();  // Move to environment handler class ?
         void pushToFrontStarterObjectNearestToPoint(const array1dInt point1); // Move to environment handler class ?
 
-        virtual double getIdealObjectArea(const array1dInt point1) = 0;
+        virtual double getIdealObjectArea(const array1dInt point1) const = 0;
         virtual std::unique_ptr<AbstractObject> createNewHero() = 0;
         virtual std::tuple<coordinate,coordinate,bool> 
             convertStepInput(const unsigned int action) const = 0;
             
         std::vector<LineObject> _startObjects;
-        
+
     private:
+        double calculateBonusForHero() const;
         const array1dInt _size;
         std::vector<std::unique_ptr<AbstractObject>> _objects;
         tensor _stateTensor;

@@ -16,7 +16,7 @@ namespace ReLeMesh
 
 
     protected:
-        double getIdealObjectArea(const array1dInt point1);
+        double getIdealObjectArea(const array1dInt point1) const;
         std::unique_ptr<AbstractObject> createNewHero();
         std::tuple<coordinate,coordinate,bool> convertStepInput(const unsigned int input) const;
     };

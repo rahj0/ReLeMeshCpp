@@ -1,6 +1,6 @@
 # ReLeMesh C++ Interface Project
-This project is created to support my [ReLeMesh project](https://gitlab.com/rasmushjort8/relemesh). 
-The project is written with c++17.
+This project is created to support my [ReLeMesh project](https://gitlab.com/rasmushjort8/relemesh). The target for this project is a shared lib, which can be used in the original python project. The hope is to speed up the training of the neural networks, which was slowed down significantly by the python implementation of the environment.
+The project is written in c++17. 
 
 ### Prerequisites
 

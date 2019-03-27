@@ -75,3 +75,22 @@ ReLeMesh::TriMeshEnvironment::convertStepInput(const unsigned int input) const
         }
         return {{changeNorthWestX, changeNorthWestY},{ changeNorthEastX, changeNorthEastY}, newHero};
 }
+
+void ReLeMesh::TriMeshEnvironment::convertHeroToStartObjects()
+{ 
+    auto northWest = getHero()->getNorthWest();
+    auto northEast = getHero()->getNorthEast();
+    int channel = 1;
+    auto valueWest = _state[northWest[0],northWest[1],channel];
+    auto valueEast = _state[northEast[0],northEast[1],channel];
+    // 
+    // if((valueWest == 0.0) or (valueEast == 0.0)):
+    //     self.startObjects.append(self.objects[-1])
+    //     return
+    // else:
+    //     for pixel in BasicEnvironmentRender.computePixelsFromLine(northWest[0],northWest[1],northEast[0],northEast[1]):
+    //         if(self._state[pixel[0],pixel[1],1] == 0.0 ):
+    //             self.startObjects.append(self.objects[-1])
+    //             return
+
+}// Move to environment handler class ?

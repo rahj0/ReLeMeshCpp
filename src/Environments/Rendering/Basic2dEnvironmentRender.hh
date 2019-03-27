@@ -21,6 +21,7 @@ namespace ReLeMesh
         bool renderObject(const std::unique_ptr<AbstractObject>& object, std::vector<std::vector<float>>& channelState);
         bool renderEnv(const std::vector<std::unique_ptr<AbstractObject>>& objects, 
         tensor& channelState);
+        int getRoleChannel(const AbstractObject::Role role) const {return _roleChannels.at(role);}
 
     private:
         const integer _sizeX;

@@ -104,15 +104,3 @@ bool ReLeMesh::AbstractObject::isNewShapeValid() const
 {
     return true;
 }
-//     def getNorthWest(self):
-//         return self._northWest
-    
-//     def getNorthEast(self):
-//         return self._northEast
-    
-//     def getSouthWest(self):
-//         return self._southWest
-    
-//     def getSouthEast(self):
-//         return self._southEast
-    

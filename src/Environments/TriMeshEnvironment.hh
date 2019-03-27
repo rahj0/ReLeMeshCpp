@@ -14,8 +14,8 @@ namespace ReLeMesh
         virtual ~TriMeshEnvironment() {}
         long getMaxNumberOfHeros() const;
 
-
     protected:
+        void convertHeroToStartObjects();
         double getIdealObjectArea(const array1dInt point1) const;
         std::unique_ptr<AbstractObject> createNewHero();
         std::tuple<coordinate,coordinate,bool> convertStepInput(const unsigned int input) const;

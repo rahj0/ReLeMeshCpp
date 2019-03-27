@@ -41,7 +41,17 @@
 			"deque": "cpp",
 			"numeric": "cpp",
 			"memory": "cpp",
-			"algorithm": "cpp"
+			"algorithm": "cpp",
+			"*.ipp": "cpp",
+			"strstream": "cpp",
+			"chrono": "cpp",
+			"cstdarg": "cpp",
+			"cstring": "cpp",
+			"ctime": "cpp",
+			"list": "cpp",
+			"iomanip": "cpp",
+			"ratio": "cpp",
+			"thread": "cpp"
 		}
 	}
 }

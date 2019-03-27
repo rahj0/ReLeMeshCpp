@@ -50,10 +50,11 @@ namespace ReLeMesh
         coordinate getSouthWest() const {return _southWest;}
         coordinate getSouthEast() const {return _southEast;}
         Role getRole() const {return _role;}
+        void setRole(const Role role) {_role = role;}
         virtual double calculateArea() const = 0;
 
     protected:
-        const Role _role;
+        Role _role;
     private:
         bool changeCorner(const coordinate changeVector, coordinate corner);
         virtual bool isNewShapeValid() const;

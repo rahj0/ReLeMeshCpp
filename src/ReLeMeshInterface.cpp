@@ -17,16 +17,13 @@ extern "C" void step(void* ptr, int action, float* data)
     auto env = static_cast<TriMeshEnvironment*>(ptr);
     auto [reward,done,state] = env->step(action);
     std::cout << "Reward: " << reward << std::endl;
-    std::cout << "Done: " << (done ? "True" : "False") << std::endl;
-    std::cout << "Size of state: " << state.size() << std::endl;
-    env->printState();
-    long i = 0;
+    std::cout << "Status: " << (done ? "Finished" : "Running") << std::endl;
+    long long i = 0;
     for(auto& matrix : state){
         for(auto& vector : matrix){
             for(auto& value : vector){
                 data[i] = value;
                 ++i;
-                std::cout << i << std::endl;
             }
         }
     }

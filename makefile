@@ -6,9 +6,17 @@ INC := -I include -I ../boost_1_69_0
 LIBFOLDER := lib/debug
 LIB := $(LIBFOLDER)/*
 
-
-
 all: test
+
+libOnly: ./bin/unitTester
+	./bin/unitTester
+	python3 ./src/test.py
+
+test: bin/unitTest bin/unitTester
+	./bin/unitTester
+	python3 ./src/test.py
+	# --- Boost Unit Tests --- #
+	./bin/unitTest
 
 bin/unitTester: src/unitTester.cpp bin/ReLeMeshInterface.so
 	$(CC) src/unitTester.cpp $(LIBFOLDER)/* -o bin/unitTester
@@ -35,12 +43,6 @@ $(LIBFOLDER)/Basic2dEnvironmentRender.o: src/Environments/Rendering/Basic2dEnvir
 $(LIBFOLDER)/AbstractWorldGenerator.o: src/WorldGenerators/AbstractWorldGenerator.cpp src/WorldGenerators/SimpleWorldGenerator.cpp 
 	$(CC) src/WorldGenerators/AbstractWorldGenerator.cpp $(INC) -c -o $(LIBFOLDER)/AbstractWorldGenerator.o
 	$(CC) src/WorldGenerators/SimpleWorldGenerator.cpp $(INC) -c -o $(LIBFOLDER)/SimpleWorldGenerator.o
-
-test: bin/unitTest bin/unitTester
-	./bin/unitTester
-	python3 ./src/test.py
-	# --- Boost Unit Tests --- #
-	./bin/unitTest
 
 bin/unitTest: src/unitTests/Basic2dEnvironmentRender_unitTest.cpp src/unitTests/Dummy_unitTest.cpp src/unitTests/unitTestMain.cpp bin/ReLeMeshInterface.so
 	$(CC) src/unitTests/unitTestMain.cpp $(INC) -c -o lib/tests/unitTestMain.o

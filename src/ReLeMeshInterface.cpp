@@ -29,6 +29,31 @@ extern "C" void step(void* ptr, int action, float* data)
     }
 }
 
+extern "C" void getState(void* ptr, float* data)
+{
+    auto env = static_cast<TriMeshEnvironment*>(ptr);
+    auto state = env->getState();
+    long long i = 0;
+    for(auto& matrix : state){
+        for(auto& vector : matrix){
+            for(auto& value : vector){
+                data[i] = value;
+                ++i;
+            }
+        }
+    }
+}
+extern "C" int getMaxNumberOfHeros(void* ptr, float* data)
+{
+    auto env = static_cast<TriMeshEnvironment*>(ptr);
+    return int(env->getMaxNumberOfHeros());
+}
+extern "C" int getActionCount(void* ptr)
+{
+    auto env = static_cast<TriMeshEnvironment*>(ptr);
+    return int(env->getActionCount());
+}
+
 extern "C" void deleteEnvironment(void* ptr)
 {
     auto env = static_cast<TriMeshEnvironment*>(ptr);

@@ -24,7 +24,13 @@ ySize = reLeMeshLib.getSizeY(testTriEnv)
 print("Got verticaltal Size: ", ySize )
 nChannels = reLeMeshLib.getChannelCount(testTriEnv)
 data = (c_float*(ySize*xSize*nChannels))()
+dataFromGetState = (c_float*(ySize*xSize*nChannels))()
 reLeMeshLib.step(testTriEnv,0,data)
+
+reLeMeshLib.getState(testTriEnv,dataFromGetState)
+print("Maximum number of heroes: ", reLeMeshLib.getMaxNumberOfHeros(testTriEnv))
+print("action count: ", reLeMeshLib.getActionCount(testTriEnv))
+
 reLeMeshLib.deleteEnvironment(testTriEnv)
 index = 0
 for i in range(nChannels):

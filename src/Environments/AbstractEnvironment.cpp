@@ -36,18 +36,14 @@ void ReLeMesh::AbstractEnvironment::reset()
     for(auto& obj : _objects){
         resizeObjToFitEnv(obj); // Do we need to check all objects ?
     }
-
     renderEnv(); 
     _currentBonusValue = calculateBonusForHero();
+
 }
 
 std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsigned action)
 {
-    std::cout << "step with action: " << action << std::endl;
     auto [northWest,northEast,newHero] = convertStepInput(action);
-
-    std::cout << "NorthWest: " << northWest[0] << northWest[1] << std::endl;    
-    std::cout << "NorthEast: " << northEast[0] << northEast[1] << std::endl;
     if(newHero){
         std::cout << "New Hero"<< std::endl;
     }
@@ -208,15 +204,15 @@ void ReLeMesh::AbstractEnvironment::renderEnv()
 
 void ReLeMesh::AbstractEnvironment::resizeObjToFitEnv(std::unique_ptr<AbstractObject>& object)
 {
-    auto northWest = getHero()->getNorthWest();
-    auto northEast = getHero()->getNorthEast();
+    auto northWest = object->getNorthWest();
+    auto northEast = object->getNorthEast();
 
     std::vector<std::tuple<integer&,integer>> valueSet; // value, maximum value
     valueSet.push_back(std::make_tuple(std::ref(northWest[0]),_size[0]));
     valueSet.push_back(std::make_tuple(std::ref(northWest[1]),_size[1]));
     valueSet.push_back(std::make_tuple(std::ref(northEast[0]),_size[0]));
     valueSet.push_back(std::make_tuple(std::ref(northEast[1]),_size[1]));
-
+    
     for (auto& [value, max] : valueSet) {
         if (value >= max){
             value = max;

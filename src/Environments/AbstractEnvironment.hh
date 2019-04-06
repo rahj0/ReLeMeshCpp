@@ -54,7 +54,7 @@ namespace ReLeMesh
     private:
         double calculateBonusForHero() const;
         const array1dInt _size;
-        std::vector<std::unique_ptr<AbstractObject>> _objects;
+        std::vector<std::unique_ptr<AbstractObject>> _objects;        
         std::vector<integer> _actions;
         bool _done;
         bool _useCenterOfFocus;

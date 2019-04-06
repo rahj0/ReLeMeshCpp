@@ -42,7 +42,7 @@ ReLeMesh::TriMeshEnvironment::convertStepInput(const unsigned int input) const
         integer changeNorthWestY = 0;
         integer changeNorthEastX = 0;
         integer changeNorthEastY = 0;
-        bool newHero = false;
+        bool newHero = false;    
         if(input == 0){
             changeNorthWestX = 1;
         } else if( input == 1){

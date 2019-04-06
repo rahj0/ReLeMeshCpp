@@ -30,7 +30,7 @@ namespace ReLeMesh
             coordinate northEast,
             Role role);
         AbstractObject() = delete;
-
+        void printCoordinates() const;
         virtual coordinate getCenterPoint() const;
         virtual coordinate getMovingCenterPoint() const;
         double calculateNorthEastCornerAngle() const;

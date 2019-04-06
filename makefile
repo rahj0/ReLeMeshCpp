@@ -52,5 +52,5 @@ bin/unitTest: src/unitTests/Basic2dEnvironmentRender_unitTest.cpp src/unitTests/
 
 clean:
 	rm -f bin/** $(LIBFOLDER)/** lib/tests/**
-pyTest:
+pyTest: bin/unitTester
 	python3 src/test.py

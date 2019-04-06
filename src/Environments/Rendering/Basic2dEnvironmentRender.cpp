@@ -99,7 +99,7 @@ bool ReLeMesh::Basic2dEnvironmentRender::renderEnv(
     state = std::vector<std::vector<std::vector<float>>>(channels,
     std::vector<std::vector<float>>(_sizeX,std::vector<float>(_sizeY)));
     // TODO Optimize
-    // TODO idea. do vec vec of usigned int 
+    // TODO idea. do vec vec of usigned int  
     
     for(auto& object : objects){
         bool ok = renderObject(

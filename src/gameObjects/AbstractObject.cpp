@@ -16,6 +16,14 @@ ReLeMesh::AbstractObject::AbstractObject(
 {
 }
 
+void 
+ReLeMesh::AbstractObject::printCoordinates() const
+{
+    std::cout << "Object Stats" << std::endl;
+    std::cout << _southWest[0] << " " << _southEast[0] << " " << _northWest[0] << " " << _northEast[0] << " " << std::endl;
+    std::cout << _southWest[1] << " " << _southEast[1] << " " << _northWest[1] << " " << _northEast[1] << " " << std::endl;
+}
+
 coordinate 
 ReLeMesh::AbstractObject::getCenterPoint() const
 {

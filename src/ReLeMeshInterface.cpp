@@ -12,12 +12,12 @@ extern "C" void* createTriMeshEnvironment(int sizeX, int sizeY)
     return new TriMeshEnvironment(environmentSize);
 }
 
-extern "C" void step(void* ptr, int action, float* data)
+extern "C" void step(void* ptr, const int action, float& rewardOut, bool& doneOut, float* data)
 {
     auto env = static_cast<TriMeshEnvironment*>(ptr);
     auto [reward,done,state] = env->step(action);
-    std::cout << "Reward: " << reward << std::endl;
-    std::cout << "Status: " << (done ? "Finished" : "Running") << std::endl;
+    doneOut = done;
+    rewardOut = reward;
     long long i = 0;
     for(auto& matrix : state){
         for(auto& vector : matrix){

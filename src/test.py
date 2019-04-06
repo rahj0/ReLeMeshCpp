@@ -11,8 +11,6 @@ reLeMeshLib.getSizeX.restype = c_int
 reLeMeshLib.getSizeY.restype = c_int
 reLeMeshLib.getChannelCount.restype = c_int
 
-reLeMeshLib.step.argtypes = [c_void_p,c_int,POINTER(c_float)]
-
 print("Try to create tri mesh environment")
 testTriEnv = reLeMeshLib.createTriMeshEnvironment(10,10)
 
@@ -25,7 +23,19 @@ print("Got verticaltal Size: ", ySize )
 nChannels = reLeMeshLib.getChannelCount(testTriEnv)
 data = (c_float*(ySize*xSize*nChannels))()
 dataFromGetState = (c_float*(ySize*xSize*nChannels))()
-reLeMeshLib.step(testTriEnv,0,data)
+reward = c_float()
+done = c_bool()
+
+reLeMeshLib.step(testTriEnv,0,byref(reward),byref(done),data)
+
+
+print("Reward: ", reward.value)
+if done:
+    status = "Running"
+else:
+    status = "Finished"
+print("Status: ", status)
+
 
 reLeMeshLib.getState(testTriEnv,dataFromGetState)
 print("Maximum number of heroes: ", reLeMeshLib.getMaxNumberOfHeros(testTriEnv))

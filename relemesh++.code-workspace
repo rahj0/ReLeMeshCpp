@@ -51,7 +51,8 @@
 			"list": "cpp",
 			"iomanip": "cpp",
 			"ratio": "cpp",
-			"thread": "cpp"
+			"thread": "cpp",
+			"cstddef": "cpp"
 		}
 	}
 }

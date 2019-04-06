@@ -44,9 +44,10 @@ $(LIBFOLDER)/AbstractWorldGenerator.o: src/WorldGenerators/AbstractWorldGenerato
 	$(CC) src/WorldGenerators/AbstractWorldGenerator.cpp $(INC) -c -o $(LIBFOLDER)/AbstractWorldGenerator.o
 	$(CC) src/WorldGenerators/SimpleWorldGenerator.cpp $(INC) -c -o $(LIBFOLDER)/SimpleWorldGenerator.o
 
-bin/unitTest: src/unitTests/Basic2dEnvironmentRender_unitTest.cpp src/unitTests/Dummy_unitTest.cpp src/unitTests/unitTestMain.cpp bin/ReLeMeshInterface.so
+bin/unitTest: src/unitTests/Basic2dEnvironmentRender_unitTest.cpp src/unitTests/Dummy_unitTest.cpp src/unitTests/TriMeshEnvironment_unitTest.cpp src/unitTests/unitTestMain.cpp bin/ReLeMeshInterface.so
 	$(CC) src/unitTests/unitTestMain.cpp $(INC) -c -o lib/tests/unitTestMain.o
 	$(CC) src/unitTests/Basic2dEnvironmentRender_unitTest.cpp $(INC) -c -o lib/tests/Basic2dEnvironmentRender_unitTest.o
+	$(CC) src/unitTests/TriMeshEnvironment_unitTest.cpp $(INC) -c -o lib/tests/TriMeshEnvironment_unitTest.o
 	$(CC) src/unitTests/Dummy_unitTest.cpp $(INC) -c -o lib/tests/Dummy_unitTest.o
 	$(CC) lib/tests/* $(INC) $(LIBFOLDER)/* -o bin/unitTest
 

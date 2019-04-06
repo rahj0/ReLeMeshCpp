@@ -56,7 +56,7 @@ namespace ReLeMesh
     protected:
         Role _role;
     private:
-        bool changeCorner(const coordinate changeVector, coordinate corner);
+        bool changeCorner(const coordinate changeVector, coordinate& corner);
         virtual bool isNewShapeValid() const;
         double calculateAngle(
             const coordinate originPoint,

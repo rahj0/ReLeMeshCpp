@@ -6,20 +6,20 @@ ReLeMesh::TriangleObject::TriangleObject(
             coordinate southWest,
             coordinate southEast,
             coordinate north,   
-            Role role) : AbstractObject(southWest,southEast,north,north,role)
+            Role role) : 
+            AbstractObject(southWest,southEast,north,north,role)
 {
-    std::cout << "TriangleObject Created" << std::endl;
 }
 
 ReLeMesh::TriangleObject::TriangleObject(
             coordinate southWest,
             coordinate southEast,  
-            Role role) : AbstractObject(southWest,southEast,
+            Role role) : 
+            AbstractObject(southWest,southEast,
             generateNorthCoordinate(southWest,southEast),
             generateNorthCoordinate(southWest,southEast),
             role)
 {
-    std::cout << "TriangleObject Created" << std::endl;
 }
 ReLeMesh::coordinate ReLeMesh::TriangleObject::generateNorthCoordinate(
             coordinate southWest,

@@ -7,7 +7,6 @@ ReLeMesh::LineObject::LineObject(
             coordinate east,
             Role role) : AbstractObject(west,east,west,east,role)
 {
-    std::cout << "LineObject Created" << std::endl;
 }
 
 double ReLeMesh::LineObject::calculateArea() const

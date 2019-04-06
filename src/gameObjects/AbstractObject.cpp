@@ -96,7 +96,7 @@ void ReLeMesh::AbstractObject::setSouthEast(const coordinate newCoords)
 }
 bool ReLeMesh::AbstractObject::changeCorner(
     const coordinate changeVector, 
-    coordinate corner)
+    coordinate& corner)
 {
     auto oldCoordinate = corner;
     for(int i = 0; i < int(changeVector.size()); ++i){

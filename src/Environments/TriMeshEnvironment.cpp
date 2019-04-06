@@ -8,9 +8,6 @@ ReLeMesh::TriMeshEnvironment::
 TriMeshEnvironment(const std::array<int,ReLeMesh_N_DIM> environmentSize) :
 ReLeMesh::AbstractEnvironment(environmentSize)
 {
-    for(auto& size : environmentSize){
-        std::cout <<"size: "<< size << std::endl;
-    }
     reset();
 }
 
@@ -28,9 +25,10 @@ std::unique_ptr<ReLeMesh::AbstractObject> ReLeMesh::TriMeshEnvironment::createNe
     coordinate p1 {0,0};
     coordinate p2 {1,1};
     if(! _startObjects.empty()){
-        p1 =_startObjects.front().getNorthWest();
-        p2 = _startObjects.front().getNorthEast();
+        p1 =_startObjects.back().getNorthWest();
+        p2 = _startObjects.back().getNorthEast();
     }
+    _startObjects.pop_back();
     return std::make_unique<TriangleObject>(p1,p2, AbstractObject::Role::Active);
 }
 std::tuple<coordinate,coordinate,bool>

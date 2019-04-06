@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include <functional>
+#include <algorithm>
 
 using ReLeMesh::tensor;
 using ReLeMesh::integer;
@@ -21,6 +22,7 @@ _cornerMatchBonus(10) ,_render(environmentSize)
 
 void ReLeMesh::AbstractEnvironment::reset()
 {
+    _nHeros = 0;
     if(_worldGenerator){
         _objects = _worldGenerator->generate(_size);
         _startObjects = _worldGenerator->takeStartObjects();
@@ -30,9 +32,10 @@ void ReLeMesh::AbstractEnvironment::reset()
     _totalReward = 0.0;
     _bonusNormalisationValue = _cornerMatchBonus; // TODO: get the ideal area from world generator getIdealObjectArea(_centerOfFocus);
 
-    //     shuffle(self.startObjects) // TODO: Add shuffle
+    std::random_shuffle(_startObjects.begin(),_startObjects.end());  // TODO: Add shuffle
     _objects.push_back(createNewHero());
     ++_nHeros;
+
     for(auto& obj : _objects){
         resizeObjToFitEnv(obj); // Do we need to check all objects ?
     }
@@ -44,9 +47,6 @@ void ReLeMesh::AbstractEnvironment::reset()
 std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsigned action)
 {
     auto [northWest,northEast,newHero] = convertStepInput(action);
-    if(newHero){
-        std::cout << "New Hero"<< std::endl;
-    }
     if(_objects.empty()){
         std::cout << "empty"<< std::endl;
         throw "No objects created in environment";
@@ -56,13 +56,14 @@ std::tuple<double,bool,tensor&> ReLeMesh::AbstractEnvironment::step(const unsign
         return {0.0,_done,_state};
     }
 
-    if(newHero){
+    if(newHero){        
         saveHeroAsWall(); 
         if(_useCenterOfFocus){
             pushToFrontStarterObjectNearestToPoint(_centerOfFocus); // TODO: function does nothing
         }
         if(!_startObjects.empty() && _nHeros < getMaxNumberOfHeros() ){
             _objects.push_back(createNewHero());
+            ++_nHeros;
         } else {
             _done = true;
         }
@@ -94,8 +95,6 @@ double ReLeMesh::AbstractEnvironment::calculateBonusForHero() const
     auto actualArea = getHero()->calculateArea();
     auto newBonusValue = actualArea;
     newBonusValue -= pow(abs(actualArea-idealArea),1.5);
-    std::cout << "Area: " << actualArea << std::endl << "idealArea:" << 
-    idealArea << std::endl << "Penalty: " << pow(abs(actualArea-idealArea),1.5) << std::endl;
 
     newBonusValue -= countOverlappingPixels()*_overlappingPixelPenalty;
     newBonusValue += calculateFinishedObjectBonus();
@@ -215,7 +214,7 @@ void ReLeMesh::AbstractEnvironment::resizeObjToFitEnv(std::unique_ptr<AbstractOb
     
     for (auto& [value, max] : valueSet) {
         if (value >= max){
-            value = max;
+            value = max-1;
         } else if (value < 0){
             value = 0;
         }

@@ -29,6 +29,7 @@ namespace ReLeMesh
         integer getActionCount() const;
         integer getChannelCount() const;
         void printState() const;
+        integer getObjectCount() const {return _objects.size();}
 
     protected:
         std::unique_ptr<AbstractObject>& getHero(); // is this needed ?

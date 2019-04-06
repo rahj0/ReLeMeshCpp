@@ -2,7 +2,7 @@
 This project is created to support my [ReLeMesh project](https://gitlab.com/rasmushjort8/relemesh). 
 The target for this project is a shared lib, which can be used in the original python project. 
 The hope is to speed up the training of the neural networks, which was slowed down significantly by the python implementation of the environment.
-Another reason why I started moving to C++ instead of improving the python code, was that I would like to create a WebAssembly App using this lib(At some point).
+Another reason why I started moving to C++ instead of improving the python code, was my plan to create a WebAssembly App using this lib, at some point.
 
 The project is written in c++17. 
 

@@ -18,7 +18,6 @@ using std::cout; using std::endl; using std::vector;
 
 BOOST_AUTO_TEST_CASE( Basic2dEnvironmentRender_test )
 {
-    std::cout << "Basic2dEnvironmentRender Unit Test" << std::endl;
     int size = 10;
     std::vector<std::unique_ptr<ReLeMesh::AbstractObject>> objects; 
     coordinate p11 {0,1}; 

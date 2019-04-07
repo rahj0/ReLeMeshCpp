@@ -95,10 +95,9 @@ double ReLeMesh::AbstractEnvironment::calculateBonusForHero() const
     auto actualArea = getHero()->calculateArea();
     auto newBonusValue = actualArea;
     newBonusValue -= pow(abs(actualArea-idealArea),1.5);
-
     newBonusValue -= countOverlappingPixels()*_overlappingPixelPenalty;
     newBonusValue += calculateFinishedObjectBonus();
-    return 0.0;
+    return newBonusValue;
 }
 
 void ReLeMesh::AbstractEnvironment::setWorldGenerator(

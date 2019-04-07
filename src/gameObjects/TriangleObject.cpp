@@ -37,7 +37,13 @@ ReLeMesh::coordinate ReLeMesh::TriangleObject::generateNorthCoordinate(
      
 double ReLeMesh::TriangleObject::calculateArea() const
 {
-    return 0.0;
+    auto x1 = _southWest[0];
+    auto y1 = _southWest[1];
+    auto x2 = _northEast[0];
+    auto y2 = _northEast[1];
+    auto x3 = _southEast[0];
+    auto y3 = _southEast[1];
+    return abs(0.5*((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1)));
 }
 
 bool ReLeMesh::TriangleObject::changeNorthWest(const coordinate changeVector)

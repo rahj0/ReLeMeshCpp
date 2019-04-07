@@ -18,7 +18,7 @@ long ReLeMesh::TriMeshEnvironment::getMaxNumberOfHeros() const
 
 double ReLeMesh::TriMeshEnvironment::getIdealObjectArea(const array1dInt point1) const
 {
-    return 0.0; //TODO
+    return _worldGenerator->getIdealAverageSquareArea()*2.0; 
 }
 std::unique_ptr<ReLeMesh::AbstractObject> ReLeMesh::TriMeshEnvironment::createNewHero()
 {
@@ -76,19 +76,31 @@ ReLeMesh::TriMeshEnvironment::convertStepInput(const unsigned int input) const
 
 void ReLeMesh::TriMeshEnvironment::convertHeroToStartObjects()
 { 
-    auto northWest = getHero()->getNorthWest();
-    auto northEast = getHero()->getNorthEast();
-    int channel = 1;
-    auto valueWest = _state[northWest[0],northWest[1],channel];
-    auto valueEast = _state[northEast[0],northEast[1],channel];
-    // 
-    // if((valueWest == 0.0) or (valueEast == 0.0)):
-    //     self.startObjects.append(self.objects[-1])
-    //     return
-    // else:
-    //     for pixel in BasicEnvironmentRender.computePixelsFromLine(northWest[0],northWest[1],northEast[0],northEast[1]):
-    //         if(self._state[pixel[0],pixel[1],1] == 0.0 ):
-    //             self.startObjects.append(self.objects[-1])
-    //             return
+    // auto northWest = getHero()->getNorthWest();
+    // auto northEast = getHero()->getNorthEast();
+    // double reward = 0.0;
+    // auto northWestValue = _state[1][northWest[0]][northWest[1]];
+    // auto northEastValue = _state[1][northEast[0]][northEast[1]];
+    // if(northEastValue == 1.0){
+    //     reward += _cornerMatchBonus;
+    // } else if(northEastValue > 0.0){
+    //     reward -= _cornerMatchBonus;
+    // }
+    // return reward;
 
 }// Move to environment handler class ?
+
+double ReLeMesh::TriMeshEnvironment::calculateFinishedObjectBonus() const 
+{ 
+    auto northWest = getHero()->getNorthWest();
+    auto northEast = getHero()->getNorthEast();
+    double reward = 0.0;
+    auto northWestValue = _state[1][northWest[0]][northWest[1]];
+    auto northEastValue = _state[1][northEast[0]][northEast[1]];
+    if(northEastValue == 1.0){
+        reward += _cornerMatchBonus;
+    } else if(northEastValue > 0.0){
+        reward -= _cornerMatchBonus;
+    }
+    return reward;
+}

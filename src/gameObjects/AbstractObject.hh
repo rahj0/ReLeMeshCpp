@@ -54,7 +54,11 @@ namespace ReLeMesh
         virtual double calculateArea() const = 0;
 
     protected:
-        Role _role;
+        Role _role;        
+        coordinate _southWest;
+        coordinate _southEast;
+        coordinate _northWest;
+        coordinate _northEast;
     private:
         bool changeCorner(const coordinate changeVector, coordinate& corner);
         virtual bool isNewShapeValid() const;
@@ -62,10 +66,7 @@ namespace ReLeMesh
             const coordinate originPoint,
             const coordinate secondPoint) const;
 
-        coordinate _southWest;
-        coordinate _southEast;
-        coordinate _northWest;
-        coordinate _northEast;
+
         
       };
 }

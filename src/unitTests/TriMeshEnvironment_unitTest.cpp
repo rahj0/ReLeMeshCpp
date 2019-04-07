@@ -107,18 +107,17 @@ BOOST_AUTO_TEST_CASE( TriMeshEnvironment_reset_test )
 
 BOOST_AUTO_TEST_CASE( TriMeshEnvironment_reward_test )
 {
-    int size = 20;
+    int size = 10;
     ReLeMesh::TriMeshEnvironment testEnv({size,size});
     BOOST_CHECK(testEnv.getMaxNumberOfHeros() != 0);
     BOOST_CHECK(testEnv.getActionCount() == 0);
-
+    // auto [reward,done,state] = testEnv.step(action);
     double stepPenalty = 0.0, totalReward = 0.0;
     std::list<int> actions{0,1,2,3,4,5,6,7};
     for(auto action :actions){
         auto [reward,done,state] = testEnv.step(action);
-        std::cout << reward << std::endl;
         totalReward += reward;
         stepPenalty += 0.05; // this is the normalised step penalty. TODO: get rid of hard coded value
     }
-    BOOST_CHECK(totalReward + stepPenalty == 0.0);
+    BOOST_CHECK((totalReward + stepPenalty) < 1e-8);
 }

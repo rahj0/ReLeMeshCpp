@@ -12,13 +12,15 @@ namespace ReLeMesh
     public:
         TriMeshEnvironment(const std::array<int,ReLeMesh_N_DIM> envSize);
         virtual ~TriMeshEnvironment() {}
-        long getMaxNumberOfHeros() const;
+        long getMaxNumberOfHeros() const override;
 
     protected:
-        void convertHeroToStartObjects();
-        double getIdealObjectArea(const array1dInt point1) const;
-        std::unique_ptr<AbstractObject> createNewHero();
-        std::tuple<coordinate,coordinate,bool> convertStepInput(const unsigned int input) const;
+        double calculateFinishedObjectBonus() const override;
+        void convertHeroToStartObjects() override;
+        double getIdealObjectArea(const array1dInt point1) const override;
+        std::unique_ptr<AbstractObject> createNewHero() override;
+        std::tuple<coordinate,coordinate,bool> convertStepInput(
+            const unsigned int input) const override;
     };
 }
 

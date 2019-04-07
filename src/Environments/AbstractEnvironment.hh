@@ -36,7 +36,7 @@ namespace ReLeMesh
         const std::unique_ptr<AbstractObject>& getHero() const; // is this needed ?
         // void moveChar(); // This might need to return tuple
         integer countOverlappingPixels() const; // Move to analyser class ?
-        double calculateFinishedObjectBonus() const;  // Move to analyser class ?
+        virtual double calculateFinishedObjectBonus() const;  // Move to analyser class ?
         void renderEnv(); 
 
         void resizeObjToFitEnv(std::unique_ptr<AbstractObject>& object);  // Move to environment handler class ?
@@ -51,6 +51,8 @@ namespace ReLeMesh
             
         std::vector<LineObject> _startObjects;
         tensor _state;
+        const double _cornerMatchBonus;
+        std::unique_ptr<AbstractWorldGenerator> _worldGenerator;
         
     private:
         double calculateBonusForHero() const;
@@ -64,10 +66,8 @@ namespace ReLeMesh
         double _currentBonusValue;
         const double _overlappingPixelPenalty;
         double _bonusNormalisationValue;
-        const double _cornerMatchBonus;
         double _totalReward;
         Basic2dEnvironmentRender _render;
-        std::unique_ptr<AbstractWorldGenerator> _worldGenerator;
     };
 }
 

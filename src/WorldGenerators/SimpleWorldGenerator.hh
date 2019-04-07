@@ -14,9 +14,11 @@ namespace ReLeMesh
     public:
         SimpleWorldGenerator();
         std::vector<std::unique_ptr<AbstractObject>> generate(const std::array<integer,2> envSize);
+        double getIdealAverageSquareArea() const;
     private: 
         integer _nHorisontalLines;
         integer _nVerticalLines;
+        integer _totalArea;
     };
 }
 

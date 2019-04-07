@@ -8,6 +8,7 @@ ReLeMesh::SimpleWorldGenerator::SimpleWorldGenerator()
 {
     _nHorisontalLines = 2;
     _nVerticalLines = 2;
+    _totalArea = 0.0;
 }
 std::vector<std::unique_ptr<ReLeMesh::AbstractObject>> 
 ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
@@ -16,6 +17,7 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         integer minY = 0;
         integer worldSizeX = envSize[0];
         integer worldSizeY = envSize[1];
+        _totalArea = worldSizeX*worldSizeY;
         integer maxX = worldSizeX - 1;
         integer maxY = worldSizeY - 1;
         std::vector<std::unique_ptr<AbstractObject>> objects;
@@ -128,4 +130,10 @@ ReLeMesh::SimpleWorldGenerator::generate(const std::array<integer,2> envSize)
         }
     }
     return objects;
+}
+
+double ReLeMesh::SimpleWorldGenerator::getIdealAverageSquareArea() const
+{
+    std::cout << "_totalArea: " <<_totalArea << std::endl;
+    return double(_totalArea)/double(_nHorisontalLines*_nVerticalLines);
 }
